@@ -1,0 +1,101 @@
+body {
+    background-color: whitesmoke;
+}
+
+#sub-heading {
+    background-color: whitesmoke;
+    padding: 50px 0px;
+    padding-bottom: 0px;
+}
+
+#first-heading {
+    color: black;
+    padding-bottom: 120px;
+}
+
+#site-name {
+    font-family: serif;
+    font-size: 50px;
+    font-weight: bold;
+    padding-top: 80px;
+}
+
+#banner {
+    font-size: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#start {
+    background: darkblue;
+    margin-top: 10px;
+    color: white;
+}
+
+#second-heading {
+    background: darkblue;
+    color: white;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    margin: auto;
+    /* max-width: 500px; */
+}
+
+#second-heading h3 {
+    text-decoration: transparent;
+    padding-bottom: 10px;
+}
+
+#second-heading li {
+    font-size: 18px;
+    color: rgb(218, 218, 218);
+    margin-bottom: 2px;
+}
+
+#how-to-start {
+    max-width: 400px;
+    margin: auto;
+    background-color: red !important;
+}
+
+
+#third-heading {
+    background-color: white;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+#credentials {
+    max-width: 400px;
+    margin: auto;
+    padding: 50px;
+}
+
+#copy {
+    background-color: green;
+    border: 0px;
+    color: white;
+    padding: 3px 15px;
+    margin-top: 10px;
+}
+
+input[type="button"] {
+    background-color: black;
+    border: 0px;
+    color: whitesmoke;
+    padding: 3px 15px;
+    border-radius: 3px;
+}
+
+
+footer {
+    background: black;
+    text-align: center;
+    padding: 50px 0px;
+    padding-bottom: 10px;
+    color: white;
+}
+
+footer p {
+    margin: 0px 10px;
+}

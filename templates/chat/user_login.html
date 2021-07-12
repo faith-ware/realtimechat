@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style>
+        form {
+            width: 300px;
+            margin: auto;
+            background-color: aliceblue !important;
+            padding: 20px 50px;
+        }
+
+        .login {
+            margin-top: 80px;
+        }
+    </style>
+{% endblock style %}
+
+{% block title %}
+    <title>Login</title>
+{% endblock title %}
+
+
+{% block content %}
+<h2 class="text-center login">Login</h2>
+    <form action="" method="POST" class="card">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+          </div>
+          <div class="mb-3">
+            <label for="group-password" class="form-label">Group password</label>
+            <input type="password" name="group-password" class="form-control" id="group-password" placeholder="Enter the group password">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Submit</button>
+          <b>Note:</b>
+          <ul>
+              <li>If you do not have account before new one will be created automatically.</li>
+          </ul>
+    </form>
+{% endblock content %}

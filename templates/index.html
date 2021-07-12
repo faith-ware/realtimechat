@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock style %}
+
+{% block title %}
+    <title>Real time chat</title>
+{% endblock title %}
+ 
+{% block content %}
+{% include "nav.html" %}
+
+    <div id="sub-heading" class="container-fluid m-0">
+        <div id="first-heading" class="text-center">
+            <p id="site-name">Realtimechat</p>
+            <p id="banner">Generate a link and chat with anybody around the world instantely.</p>
+            <p><a href="#second-heading"><input type="button" id="start" value="Get started"></a></p>
+        </div>
+
+        <div id="second-heading">
+            <div id="how-to-start">
+                <h3 class="text-center">How to start</h3>
+                <ol>
+                    <li>Generate a link to chat with your friend or group.</li>
+                    <li>Copy link and open the link.</li>
+                    <li>Send link to whoever you want to chat with.</li>
+                    <li>Chat messages are valid for 24 hours.</li>
+                </ol>
+                <p class="mt-5"><input id="generate-link" type="button" value="Generate"> <span><input type="text" name="" id="room_link" value=""></span> <span><input type="button" id="copy" value="Copy"></span></p>
+
+            </div>
+        </div>
+
+        <div id="third-heading">
+            <div id="credentials" class="card">
+                <p>Name:</p>
+                <p>jdncdncujcnunja</p>
+
+                <p>Password:</p>
+                <p>hdbfnfjdncajcnaj</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><b>Realtimechat</b> allows you to chat with anyone by generating a link.</p>
+        <p>Whoever joins the link has access to the chat.</p>
+        <p>&copy; <b>2021</b></p>
+    </footer>
+
+
+    <script>
+
+
+        let genLink = document.getElementById("generate-link")
+        genLink.addEventListener("click", genenerate);
+
+        function genenerate() {
+            var url = "{% url 'chat:generate' %}"
+            let gen = async function getName() {
+                let myObject = await fetch(url)
+                let myText = await myObject.text();
+                alert(myText)
+            }()
+        }
+
+        async function getName(url) {
+            let myObject = await fetch(url)
+            let myText = await myObject.text();
+            alert(myText)
+        };
+        
+
+        // document.getElementById("generate-link").onclick = function(e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         type : "GET",
+        //         url : "{% url 'chat:generate' %}",
+        //         success : function (response) {
+        //             let gen_name = response.generated_name;
+        //             let gen_password = response.generated_password;
+        //             let host_url = window.location.host;
+        //             let room_link = host_url + "/chat/" + gen_name + "/"
+        //             let room_link_elem = document.getElementById("room_link");
+        //             room_link_elem.value = room_link
+        //             room_link_elem.href = "{% url 'chat:room' 1234 %}".replace(/1234/, gen_str)
+        //         },
+        //         error : function (response) {
+        //             alert("Unable to process");
+        //         }
+        //     })
+
+        // }
+
+        const copy = document.getElementById("copy")
+        copy.onclick = function (e) {
+            const copyText = document.getElementById("room_link")
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            document.execCommand("copy")
+
+            alert("Copied")
+            
+        }
+
+    </script>
+    
+{% endblock content %}
