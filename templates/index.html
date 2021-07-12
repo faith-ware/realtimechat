@@ -24,22 +24,48 @@
                 <h3 class="text-center">How to start</h3>
                 <ol>
                     <li>Generate a link to chat with your friend or group.</li>
-                    <li>Copy link and open the link.</li>
+                    <li>Copy the group password.</li>
+                    <li>Open the link and login.</li>
                     <li>Send link to whoever you want to chat with.</li>
                     <li>Chat messages are valid for 24 hours.</li>
                 </ol>
-                <p class="mt-5"><input id="generate-link" type="button" value="Generate"> <span><input type="text" name="" id="room_link" value=""></span> <span><input type="button" id="copy" value="Copy"></span></p>
+                <p class="mt-5 text-center"><input class="bg-success" id="generate-link" type="button" value="Generate"></p>
 
             </div>
         </div>
 
         <div id="third-heading">
             <div id="credentials" class="card">
-                <p>Name:</p>
-                <p>jdncdncujcnunja</p>
+                <div class="card-header text-center">
+                    <h3>Generated</h3>
+                  </div>        
 
-                <p>Password:</p>
-                <p>hdbfnfjdncajcnaj</p>
+                  <div class="card-body">
+                      <!-- <p>Group password</p>
+                      <p><input type="text" value="jndjndsjfnsjnfsjfn"></p>
+                      <p>Password</p>
+                      <p><input type="text" name="jncvjv" id=""></p> -->
+                    <p>
+                        <b>Group password:</b>
+                        <span id="group-password">dfhsadfhsfvh</span> 
+                        <span>
+                            <a title="copy" role="button" class="button">
+                                <i class="fas fa-copy text-success fw-bold p-1 ms-2"></i>
+                            </a>
+                        </span>
+                    </p>
+
+                    <p>
+                        <b>Link:</b> 
+                        <input type="text" name="" class="border-0" id="group-link" value="http://127.0.0.1:8000/chat/love/" readonly> 
+                        <span>
+                            <a title="copy" role="button" class="button">
+                                <i class="fas fa-copy text-success fw-bold p-1 ms-2"></i>
+                            </a>
+                        </span>
+                    </p>
+                    <p class="text-center"><input class="link-button" type="button" value="Open"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -62,7 +88,8 @@
             let gen = async function getName() {
                 let myObject = await fetch(url)
                 let myText = await myObject.text();
-                alert(myText)
+                console.log(myObject)
+                // alert(myObject)
             }()
         }
 

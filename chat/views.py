@@ -44,7 +44,7 @@ def room(request, room_name):
         return redirect(reverse("chat:index"))
 
 
-# Generate a group name randomly
+# Generate a group name and password randomly
 def generate_group_name(request):
     char = string.ascii_letters + string.digits 
     name = (random.choice(char) for _ in range(20))
@@ -57,7 +57,7 @@ def generate_group_name(request):
         password = (random.choice(char) for _ in range(20))
         generated_password = "".join(password)
         group = Group(name = generated_name, password = generated_password)
-        group.save()
+        # group.save()
         
         response = {
             "generated_name" : generated_name,
