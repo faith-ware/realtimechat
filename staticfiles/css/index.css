@@ -26,6 +26,11 @@ body {
     margin-right: 10px;
 }
 
+.link-button {
+    background: darkblue !important;
+    color: white !important;
+}
+
 #start {
     background: darkblue;
     margin-top: 10px;
@@ -52,9 +57,29 @@ body {
     margin-bottom: 2px;
 }
 
+#how-to-start {
+    max-width: 400px;
+    margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#how-to-start ol li {
+    margin-bottom: 5px;
+}
+
 
 #third-heading {
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+#credentials {
+    max-width: 300px;
+    background-color: whitesmoke;
+    color: black;
+    margin: auto;
 }
 
 #copy {
@@ -73,6 +98,15 @@ input[type="button"] {
     border-radius: 3px;
 }
 
+input[type="text"] {
+    width: 180px;
+    color: black;
+    background-color: whitesmoke;
+}
+
+#group-password {
+    width: 90px;
+}
 
 footer {
     background: black;

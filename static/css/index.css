@@ -64,6 +64,10 @@ body {
     padding-right: 10px;
 }
 
+#how-to-start ol li {
+    margin-bottom: 5px;
+}
+
 
 #third-heading {
     background-color: whitesmoke;
@@ -97,6 +101,11 @@ input[type="button"] {
 input[type="text"] {
     width: 180px;
     color: black;
+    background-color: whitesmoke;
+}
+
+#group-password {
+    width: 90px;
 }
 
 footer {
