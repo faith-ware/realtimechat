@@ -54,7 +54,7 @@ def generate_group_name(request):
     if check_name:
         generate_group_name(request)
     else:
-        password = (random.choice(char) for _ in range(20))
+        password = (random.choice(char) for _ in range(10))
         generated_password = "".join(password)
         group = Group(name = generated_name, password = generated_password)
         # group.save()
