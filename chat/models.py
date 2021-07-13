@@ -20,7 +20,6 @@ class Group(models.Model):
 
     def save(self, *args, **kwargs):
         self.password = make_password(self.password)
-        print(self.password)
         return super(Group, self).save(*args, **kwargs)
 
 class Chat(models.Model):
