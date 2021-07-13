@@ -23,13 +23,13 @@
             <div id="how-to-start">
                 <h3 class="text-center">How to start</h3>
                 <ol>
-                    <li>Generate a link to chat with your friend or group.</li>
+                    <li>Click on the generate button to generate a group link and password.</li>
                     <li>Copy the group password.</li>
                     <li>Open the link and login.</li>
-                    <li>Send link to whoever you want to chat with.</li>
+                    <li>Send link and group password to whoever you want to chat with.</li>
                     <li>Chat messages are valid for 24 hours.</li>
                 </ol>
-                <p class="mt-5 text-center"><input class="bg-success" id="generate-link" type="button" value="Generate"></p>
+                <p class="mt-5 text-center"><a href="#third-heading"><input class="bg-success" id="generate-link" type="button" value="Generate"></a></p>
 
             </div>
         </div>
@@ -37,17 +37,13 @@
         <div id="third-heading">
             <div id="credentials" class="card">
                 <div class="card-header text-center">
-                    <h3>Generated</h3>
+                    <h4>Generated</h4>
                   </div>        
 
                   <div class="card-body">
-                      <!-- <p>Group password</p>
-                      <p><input type="text" value="jndjndsjfnsjnfsjfn"></p>
-                      <p>Password</p>
-                      <p><input type="text" name="jncvjv" id=""></p> -->
                     <p>
                         <b>Group password:</b>
-                        <span id="group-password">dfhsadfhsfvh</span> 
+                        <input type="text" name="" class="border-0" id="group-password" value="" placeholder="group password" readonly> 
                         <span>
                             <a title="copy" role="button" class="button">
                                 <i class="fas fa-copy text-success fw-bold p-1 ms-2"></i>
@@ -57,14 +53,19 @@
 
                     <p>
                         <b>Link:</b> 
-                        <input type="text" name="" class="border-0" id="group-link" value="http://127.0.0.1:8000/chat/love/" readonly> 
+                        <input type="text" name="" class="border-0" id="group-link" value="" placeholder="chat link" readonly> 
                         <span>
                             <a title="copy" role="button" class="button">
                                 <i class="fas fa-copy text-success fw-bold p-1 ms-2"></i>
                             </a>
                         </span>
                     </p>
-                    <p class="text-center"><input class="link-button" type="button" value="Open"></p>
+                    
+                    <p class="text-center">
+                        <a href="" target="_">
+                            <input class="link-button" type="button" value="Open">
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -83,53 +84,53 @@
         let genLink = document.getElementById("generate-link")
         genLink.addEventListener("click", genenerate);
 
+        // Generate new group name and pasword
         function genenerate() {
             var url = "{% url 'chat:generate' %}"
+
             let gen = async function getName() {
-                let myObject = await fetch(url)
-                let myText = await myObject.text();
-                console.log(myObject)
-                // alert(myObject)
+                let responseFetch = await fetch(url);
+                let response = await responseFetch.json();
+                
+                groupPasswordElem = document.getElementById("group-password");
+                groupPasswordElem.value = response.generated_password;
+                
+                // Change the group link input button to the generated one
+                let host_url = window.location.host;
+                let group_link = host_url + "/chat/" + response.generated_name + "/"
+                let group_link_elem = document.getElementById("group-link");
+                group_link_elem.value = group_link
+
+                // Change the group link to the generated one
+                link_button_elem = document.querySelector(".link-button")
+                link_button_elem.parentElement.href = "{% url 'chat:room' 1234 %}".replace(/1234/, response.generated_name)
+    
+                genLink.disabled = true;
             }()
         }
-
-        async function getName(url) {
-            let myObject = await fetch(url)
-            let myText = await myObject.text();
-            alert(myText)
-        };
         
-
-        // document.getElementById("generate-link").onclick = function(e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         type : "GET",
-        //         url : "{% url 'chat:generate' %}",
-        //         success : function (response) {
-        //             let gen_name = response.generated_name;
-        //             let gen_password = response.generated_password;
-        //             let host_url = window.location.host;
-        //             let room_link = host_url + "/chat/" + gen_name + "/"
-        //             let room_link_elem = document.getElementById("room_link");
-        //             room_link_elem.value = room_link
-        //             room_link_elem.href = "{% url 'chat:room' 1234 %}".replace(/1234/, gen_str)
-        //         },
-        //         error : function (response) {
-        //             alert("Unable to process");
-        //         }
-        //     })
-
-        // }
-
-        const copy = document.getElementById("copy")
+        // Select the card body 
+        const copy = document.querySelector(".card-body")
         copy.onclick = function (e) {
-            const copyText = document.getElementById("room_link")
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
+            // Get the class list of the target
+            let copyElemClassList = e.target.classList
 
-            document.execCommand("copy")
+            // Check if the 'fa-copy' is in the class list
+            copyElemClassList.forEach(element => {
+                if (element == "fa-copy") {
+                    let elemToCopy = e.target.parentElement.parentElement.parentElement.children[1]
 
-            alert("Copied")
+                    // Copy the value of group-password or group-link
+                    if ((elemToCopy.id == "group-password") || (elemToCopy.id == "group-link")) {
+                        const copyText = document.getElementById(elemToCopy.id)
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999);
+                        document.execCommand("copy")
+                        alert("Copied")
+                    }  
+
+                }
+            });
             
         }
 
