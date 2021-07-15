@@ -123,10 +123,14 @@
                     // Copy the value of group-password or group-link
                     if ((elemToCopy.id == "group-password") || (elemToCopy.id == "group-link")) {
                         const copyText = document.getElementById(elemToCopy.id)
-                        copyText.select();
-                        copyText.setSelectionRange(0, 99999);
-                        document.execCommand("copy")
-                        alert("Copied")
+
+                        if (copyText.value) {
+                            copyText.select();
+                            copyText.setSelectionRange(0, 99999);
+                            document.execCommand("copy")
+                            alert("Copied")
+                        }
+                        
                     }  
 
                 }
