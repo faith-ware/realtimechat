@@ -11,9 +11,130 @@
 
 {% block content %}
     <div id="main-container">        
-        <div class="item1">Header</div>
-        <div class="item2">Left</div>
-        <div class="item3">Main</div>  
-        <div class="item4">Footer</div>
+        <div class="header">
+            {% include "nav.html" %}
+        </div>
+        <div class="side-nav"></div>
+        <div class="main">
+            
+            <div class="message-container">
+                <div class="message card">
+                    <p class="username">name</p>
+                    <p class="chat-message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, quam!</p>
+                    <p class="time">2:00 am</p>
+                </div>
+            </div>
+
+            <div class="left-message-container">
+                <div class="message left-message card">
+                    <p class="username">name</p>
+                    <p class="chat-message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, quam!</p>
+                    <p class="time">2:00 am</p>
+                </div>
+            </div>
+
+        </div>  
+
+        <div class="bottom">
+            <div id="message-div">
+                <textarea name="" id="message-input" cols="30" rows="1"></textarea>
+                <button type="button" id="message-send">Send</button>
+            </div>
+        </div>
     </div>
+
+    {{ room_name|json_script:"room-name" }}
+
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const chats = JSON.parse(data.chat)
+
+            for (let index = 0; index < chats.length; index++) {
+                const chat = chats[index]
+                const user = (chat.user_id || chat.user)
+                const message = chat.message
+                const time = chat.date
+
+                let mainDiv = document.querySelector(".main")
+
+                let chatContainerElem = document.createElement("div")
+                let messageDiv = document.createElement("div")
+
+                if (user == "{{ current_user }}") {
+                    chatContainerElem.className = "message-container"
+                    messageDiv.classList = ["message card"];
+                } else {
+                    chatContainerElem.className = "left-message-container"
+                    messageDiv.classList = ["message left-message card"];
+                }
+
+                let usernameElem = document.createElement("p");
+                usernameElem.className = "username"
+                usernameElem.textContent = user
+
+                let chatElem = document.createElement("p");
+                chatElem.className = "chat-message"
+                chatElem.textContent = message
+
+                let timeElem = document.createElement("p");
+                timeElem.className = "time";
+                timeElem.textContent = time;
+
+                messageDiv.appendChild(usernameElem);
+                messageDiv.appendChild(chatElem);
+                messageDiv.appendChild(timeElem);
+
+                chatContainerElem.appendChild(messageDiv)
+
+                mainDiv.appendChild(chatContainerElem)
+                
+            }
+
+            const messages = document.querySelectorAll(".message")
+            const lastMessage = messages[messages.length - 1]
+            lastMessage.id = "last-message"
+            lastMessage.tabindex = "1"
+            let mainDiv = document.querySelector(".main")
+            mainDiv.scrollTo(0,mainDiv.scrollHeight)
+            console.log(lastMessage)
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#message-input').focus();
+        document.querySelector('#message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#message-send').click();
+            }
+        };
+
+        document.querySelector('#message-send').onclick = function(e) {
+            const messageInputDom = document.querySelector('#message-input');
+            const message = messageInputDom.value;
+
+            if (message.match(/\S/)) {
+                if (message.length != 0) {
+                    chatSocket.send(JSON.stringify({
+                        'message': message
+                    }));
+                    messageInputDom.value = '';
+                }
+            }
+           
+        };
+    </script>
 {% endblock content %}
