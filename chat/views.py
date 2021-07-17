@@ -32,6 +32,7 @@ def room(request, room_name):
         if request.user.is_authenticated:
             context = {
                 "room_name" : room_name,
+                "current_user" : request.user,
             }
             return render(request, "chat/room.html", context)
         else:
