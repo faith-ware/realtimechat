@@ -58,7 +58,7 @@ def generate_group_name(request):
         password = (random.choice(char) for _ in range(10))
         generated_password = "".join(password)
         group = Group(name = generated_name, password = generated_password)
-        # group.save()
+        group.save()
         
         response = {
             "generated_name" : generated_name,
