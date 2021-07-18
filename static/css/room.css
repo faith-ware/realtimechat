@@ -61,8 +61,8 @@
 .message {
     background-color: darkblue;
     color: whitesmoke;
-    margin-bottom: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     max-width: 70%;
     padding: 5px;
     padding-left: 5px;
@@ -74,7 +74,8 @@
     background-color: whitesmoke;
     color: rgb(20, 20, 20);
     margin: 0px; 
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .username {
@@ -107,6 +108,8 @@
 
 #message-input {
     resize: none;
+    padding-top: 10px;
+    font-size: 15px;
 }
 
 #message-send {
