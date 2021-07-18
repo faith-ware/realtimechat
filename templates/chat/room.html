@@ -17,21 +17,13 @@
         <div class="side-nav"></div>
         <div class="main">
             
-            <div class="message-container">
+            <!-- <div class="message-container">
                 <div class="message card">
                     <p class="username">name</p>
                     <p class="chat-message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, quam!</p>
                     <p class="time">2:00 am</p>
                 </div>
-            </div>
-
-            <div class="left-message-container">
-                <div class="message left-message card">
-                    <p class="username">name</p>
-                    <p class="chat-message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, quam!</p>
-                    <p class="time">2:00 am</p>
-                </div>
-            </div>
+            </div> -->
 
         </div>  
 
@@ -72,14 +64,6 @@
                 let chatContainerElem = document.createElement("div")
                 let messageDiv = document.createElement("div")
 
-                if (user == "{{ current_user }}") {
-                    chatContainerElem.className = "message-container"
-                    messageDiv.classList = ["message card"];
-                } else {
-                    chatContainerElem.className = "left-message-container"
-                    messageDiv.classList = ["message left-message card"];
-                }
-
                 let usernameElem = document.createElement("p");
                 usernameElem.className = "username"
                 usernameElem.textContent = user
@@ -92,10 +76,17 @@
                 timeElem.className = "time";
                 timeElem.textContent = time;
 
-                messageDiv.appendChild(usernameElem);
+                if (user == "{{ current_user }}") {
+                    chatContainerElem.className = "message-container"
+                    messageDiv.classList = ["message card"];
+                } else {
+                    chatContainerElem.className = "left-message-container"
+                    messageDiv.classList = ["message left-message card"];
+                    messageDiv.appendChild(usernameElem);
+                }        
+
                 messageDiv.appendChild(chatElem);
                 messageDiv.appendChild(timeElem);
-
                 chatContainerElem.appendChild(messageDiv)
 
                 mainDiv.appendChild(chatContainerElem)
