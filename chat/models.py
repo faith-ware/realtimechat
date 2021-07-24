@@ -38,3 +38,9 @@ class Member(models.Model):
 
     def __str__(self) -> str:
         return str(self.user) 
+
+class Connected_channel(models.Model):
+    user = models.ForeignKey(User, related_name="connected_channel", on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, related_name="connected_channel", on_delete=models.CASCADE)
+    channel_name = models.CharField(max_length=255)
+
