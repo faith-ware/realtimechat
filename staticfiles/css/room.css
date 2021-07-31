@@ -1,0 +1,158 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.header { 
+    grid-column: 1 / 5; 
+    background-color: whitesmoke;
+}
+
+.side-nav { 
+    background-color: whitesmoke;
+    grid-row: 2 / 5;
+}
+
+.main { 
+    background-color: white;
+    grid-column: 2 / 5;
+    grid-row: 2 / 4;
+    overflow-y: scroll;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.bottom { 
+    background-color: white;
+    grid-column: 2 / 5;
+    grid-row: 4 / 5;
+}
+
+#main-container {
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 8% 75% 10%;
+    grid-template-columns: 20% auto auto auto;
+    /* grid-gap: 10px; */
+    background-color: white;
+    /* padding: 10px; */
+}
+
+.message-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+
+
+.left-message-container {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.message-container:last-child, .left-message-container:last-child {
+    margin-bottom: 15px !important;
+}
+.message {
+    background-color: darkblue;
+    color: whitesmoke;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    max-width: 70%;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: fit-content;
+}
+
+.left-message {
+    background-color: whitesmoke;
+    color: rgb(20, 20, 20);
+    margin: 0px; 
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.username {
+    margin: 0px;
+    color: grey;
+    margin-bottom: 0px;
+}
+
+.chat-message {
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.time {
+    margin-top: 2px;
+    margin-bottom: 0px;
+    padding: 0px;
+    color: rgb(150, 150, 150);
+    position: relative;
+    font-size: 12px;
+    text-align: right;
+}
+
+#message-div {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    height: 100%;
+}
+
+#message-input {
+    resize: none;
+    padding-top: 10px;
+    font-size: 15px;
+    padding-left: 5px;
+}
+
+#message-send {
+    background-color: rgb(3, 139, 3);
+    color: white;
+    border: 1px solid green;
+}
+
+
+#total-members {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#online-users {
+    margin-left: 10px;
+    color: green;
+}
+
+#total-members > p , #online-users > p {
+    margin-bottom: 0px;
+}
+
+
+@media (max-width : 576px) {
+    .side-nav { 
+        display: none;
+    }
+
+    .main { 
+        background-color: white;
+        grid-column: 1 / 5;
+        grid-row: 2 / 4;
+        overflow-y: scroll;
+    }
+
+    .bottom { 
+        grid-column: 1 / 5;
+        grid-row: 4 / 5;
+    }
+}
