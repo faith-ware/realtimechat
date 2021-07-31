@@ -52,12 +52,17 @@
     padding-right: 10px;
 }
 
+
+
 .left-message-container {
     display: flex;
     justify-content: flex-start;
     padding-left: 10px;
 }
 
+.message-container:last-child, .left-message-container:last-child {
+    margin-bottom: 15px !important;
+}
 .message {
     background-color: darkblue;
     color: whitesmoke;
@@ -65,8 +70,8 @@
     margin-bottom: 5px;
     max-width: 70%;
     padding: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
     width: fit-content;
 }
 
@@ -80,9 +85,8 @@
 
 .username {
     margin: 0px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    
+    color: grey;
+    margin-bottom: 0px;
 }
 
 .chat-message {
@@ -94,10 +98,10 @@
     margin-top: 2px;
     margin-bottom: 0px;
     padding: 0px;
-    color: rgb(122, 122, 122);
+    color: rgb(150, 150, 150);
     position: relative;
-    width: fit-content;
-    float: right;
+    font-size: 12px;
+    text-align: right;
 }
 
 #message-div {
@@ -110,12 +114,28 @@
     resize: none;
     padding-top: 10px;
     font-size: 15px;
+    padding-left: 5px;
 }
 
 #message-send {
     background-color: rgb(3, 139, 3);
     color: white;
     border: 1px solid green;
+}
+
+
+#total-members {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#online-users {
+    margin-left: 10px;
+    color: green;
+}
+
+#total-members > p , #online-users > p {
+    margin-bottom: 0px;
 }
 
 
@@ -132,7 +152,6 @@
     }
 
     .bottom { 
-        background-color: hotpink;
         grid-column: 1 / 5;
         grid-row: 4 / 5;
     }
