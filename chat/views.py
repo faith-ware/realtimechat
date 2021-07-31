@@ -4,7 +4,7 @@ from django.http import response
 from django.shortcuts import redirect, render
 from django.http.response import JsonResponse
 from django.urls import reverse
-from .models import Group, Chat, Member
+from .models import Group, Chat, Member, Connected_channel
 import string, random
 from .forms import GroupForm
 from django.contrib.auth.hashers import make_password, check_password
@@ -27,12 +27,14 @@ def room(request, room_name):
     user_id = request.user.id
     check_member = Member.objects.filter(user_id = user_id, group_id = group_id).exists()
     check_group = Group.objects.filter(name = room_name).exists()
+    group_members = Member.objects.filter(group_id = group_id)
 
     if check_member:
         if request.user.is_authenticated:
             context = {
                 "room_name" : room_name,
                 "current_user" : request.user,
+                "group_members" : group_members
             }
             return render(request, "chat/room.html", context)
         else:
@@ -127,3 +129,14 @@ def user_auth(request, room_name):
             return redirect(reverse("chat:user_auth", args=[room_name]))
 
     return render(request, "chat/user_login.html", context)
+
+
+def delete_user_channel(request, room_name):
+    user_id = request.user.id
+    group_id = Group.objects.filter(name = room_name)[0]
+    user_channels = Connected_channel.objects.filter(user_id = user_id, group_id = group_id)
+    user_channels.delete()
+    response = {
+        "deleted" : "deleted",
+    }
+    return JsonResponse(response)
