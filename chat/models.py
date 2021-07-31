@@ -31,6 +31,9 @@ class Chat(models.Model):
     def __str__(self) -> str:
         return self.message
 
+    class Meta:
+        ordering = ["date"]
+
 
 class Member(models.Model):
     user = models.ForeignKey(User, related_name="member", on_delete=models.CASCADE)
@@ -44,3 +47,9 @@ class Connected_channel(models.Model):
     group = models.ForeignKey(Group, related_name="connected_channel", on_delete=models.CASCADE)
     channel_name = models.CharField(max_length=255)
 
+class Online(models.Model):
+    user = models.ForeignKey(User, related_name="online", on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, related_name="online", on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return str(self.user) 
