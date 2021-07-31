@@ -12,7 +12,13 @@
 {% block content %}
     <div id="main-container">        
         <div class="header">
-            {% include "nav.html" %}
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid d-flex justify-content-start">
+                  <a class="navbar-brand">Realtimechat</a>
+                  <a class="btn me-0 pe-0">Members(<span id="members-num">0</span>)</a>
+                  <a class="btn ms-0">Online(<span id="online-num">0</span>)</a>
+                </div>
+              </nav>
         </div>
         <div class="side-nav">
             <div id="total-members">
@@ -125,6 +131,7 @@
 
             if (data.members) {
                 const members = JSON.parse(data.members)
+                document.getElementById("members-num").textContent = members.length;
                 let memberListElem = document.getElementById("member-list");
                 memberListElem.textContent = "";
 
@@ -139,6 +146,7 @@
 
             if (data.online_users) {
                 const online_users = JSON.parse(data.online_users)
+                document.getElementById("online-num").textContent = online_users.length;
                 let onlineUserListElem = document.getElementById("user-list");
                 onlineUserListElem.textContent = "";
 
@@ -159,10 +167,9 @@
             let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
 
             async function delete_user_channels() {
-                alert("About to delete channels")
                 let responseFetch = await fetch(url);
                 let response = await responseFetch.json();
-                alert(response.deleted)
+                // alert(response.deleted)
             }
             delete_user_channels();
         };
