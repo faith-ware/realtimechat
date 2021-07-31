@@ -14,7 +14,23 @@
         <div class="header">
             {% include "nav.html" %}
         </div>
-        <div class="side-nav"></div>
+        <div class="side-nav">
+            <div id="total-members">
+                <p>Total members</p>
+                <ul id="member-list">
+                   
+                </ul>
+            </div>
+
+            <div id="online-users">
+                <p>Online</p>
+                <ul id="user-list">
+
+                </ul>
+            </div>
+            
+        </div>
+
         <div class="main">
             
             <!-- <div class="message-container">
@@ -48,62 +64,107 @@
             + '/'
         );
 
+        chatSocket.onopen = function (e) {
+            alert("Connected")
+        }
+
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            const chats = JSON.parse(data.chat)
+            
+            if (data.chat) {
+                const chats = JSON.parse(data.chat)
 
-            for (let index = 0; index < chats.length; index++) {
-                const chat = chats[index]
-                const user = (chat.user_id || chat.user)
-                const message = chat.message
-                const time = chat.date
+                for (let index = 0; index < chats.length; index++) {
+                    const chat = chats[index]
+                    const user = (chat.user_id || chat.user)
+                    const message = chat.message
+                    const time = chat.date.slice(11, 23)
 
-                let mainDiv = document.querySelector(".main")
+                    let mainDiv = document.querySelector(".main")
 
-                let chatContainerElem = document.createElement("div")
-                let messageDiv = document.createElement("div")
+                    let chatContainerElem = document.createElement("div")
+                    let messageDiv = document.createElement("div")
 
-                let usernameElem = document.createElement("p");
-                usernameElem.className = "username"
-                usernameElem.textContent = user
+                    let usernameElem = document.createElement("p");
+                    usernameElem.className = "username"
+                    usernameElem.textContent = user
 
-                let chatElem = document.createElement("p");
-                chatElem.className = "chat-message"
-                chatElem.textContent = message
+                    let chatElem = document.createElement("p");
+                    chatElem.className = "chat-message"
+                    chatElem.textContent = message
 
-                let timeElem = document.createElement("p");
-                timeElem.className = "time";
-                timeElem.textContent = time;
+                    let timeElem = document.createElement("p");
+                    timeElem.className = "time";
+                    timeElem.textContent = time;
 
-                if (user == "{{ current_user }}") {
-                    chatContainerElem.className = "message-container"
-                    messageDiv.classList = ["message card"];
-                } else {
-                    chatContainerElem.className = "left-message-container"
-                    messageDiv.classList = ["message left-message card"];
-                    messageDiv.appendChild(usernameElem);
-                }        
+                    if (user == "{{ current_user }}") {
+                        chatContainerElem.className = "message-container"
+                        messageDiv.classList = ["message card"];
+                    } else {
+                        chatContainerElem.className = "left-message-container"
+                        messageDiv.classList = ["message left-message card"];
+                        messageDiv.appendChild(usernameElem);
+                    }        
 
-                messageDiv.appendChild(chatElem);
-                messageDiv.appendChild(timeElem);
-                chatContainerElem.appendChild(messageDiv)
+                    messageDiv.appendChild(chatElem);
+                    messageDiv.appendChild(timeElem);
+                    chatContainerElem.appendChild(messageDiv)
 
-                mainDiv.appendChild(chatContainerElem)
-                
+                    mainDiv.appendChild(chatContainerElem)
+
+                    }
+
+
+                    let mainDiv = document.querySelector(".main")
+                    mainDiv.scrollTo(0,mainDiv.scrollHeight)
+            
             }
 
-            const messages = document.querySelectorAll(".message")
-            const lastMessage = messages[messages.length - 1]
-            lastMessage.id = "last-message"
-            lastMessage.tabindex = "1"
-            let mainDiv = document.querySelector(".main")
-            mainDiv.scrollTo(0,mainDiv.scrollHeight)
-            console.log(lastMessage)
+
+
+            if (data.members) {
+                const members = JSON.parse(data.members)
+                let memberListElem = document.getElementById("member-list");
+                memberListElem.textContent = "";
+
+                for (let index = 0; index < members.length; index++) {
+                    const member = members[index].user_id;
+                    let liElem = document.createElement("li")
+                    liElem.textContent = member
+                    memberListElem.appendChild(liElem)
+                }
+            }
+
+
+            if (data.online_users) {
+                const online_users = JSON.parse(data.online_users)
+                let onlineUserListElem = document.getElementById("user-list");
+                onlineUserListElem.textContent = "";
+
+                for (let index = 0; index < online_users.length; index++) {
+                    const online_user = online_users[index].user_id;
+                    let liElem = document.createElement("li")
+                    liElem.textContent = online_user
+                    onlineUserListElem.appendChild(liElem)
+                }
+            }
+
         };
+
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
+            alert("Not connected");
+            let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
+
+            async function delete_user_channels() {
+                alert("About to delete channels")
+                let responseFetch = await fetch(url);
+                let response = await responseFetch.json();
+                alert(response.deleted)
+            }
+            delete_user_channels();
         };
 
         document.querySelector('#message-input').focus();
