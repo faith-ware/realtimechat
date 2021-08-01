@@ -1,13 +1,10 @@
-from os import name
 from django.contrib.auth.models import User
-from django.http import response
 from django.shortcuts import redirect, render
 from django.http.response import JsonResponse
 from django.urls import reverse
-from .models import Group, Chat, Member, Connected_channel
+from .models import Group, Member, Connected_channel
 import string, random
-from .forms import GroupForm
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
 
 def index(request):
