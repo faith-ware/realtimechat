@@ -28,6 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
+print("Secret key is", SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -153,7 +154,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get("REDIS_URL", 'redis://localhost:6379')],
+            "hosts": ["rediss://:p33ccf503309c631e9e8771c9a5e5c99c7d506699bfbd97a0ad27c478dc09602b@ec2-35-168-229-167.compute-1.amazonaws.com:17860"],
         },
     },
 }
