@@ -75,9 +75,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        print("Text data is", text_data)
         text_data_json = json.loads(text_data)
         date = str(datetime.now())
+        date_to_string = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
         message = text_data_json['message']
         user = str(self.scope["user"])
         group = self.room_name
@@ -85,7 +86,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {
                     "user" : user,
                     "message" : message,
-                    "date" : date,
+                    "date" : date_to_12h,
                 },
             ]
 
@@ -182,7 +183,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         group_id = Group.objects.filter(name = group)[0].id
         add_online = Online(user_id = user_id, group_id = group_id)
         add_online.save()
-        print("Added")
 
     # Check if a user is online
     @database_sync_to_async
