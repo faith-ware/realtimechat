@@ -14,11 +14,11 @@
         <div class="header">
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid d-flex justify-content-start">
-                  <a class="navbar-brand">Realtimechat</a>
-                  <a class="btn me-0 pe-0">Members(<span id="members-num">0</span>)</a>
-                  <a class="btn ms-0">Online(<span id="online-num">0</span>)</a>
+                  <a class="navbar-brand" href="{% url 'chat:index' %}">Realtimechat</a>
+                  <a id="all-members" class="btn me-0 pe-0">Members(<span id="members-num">0</span>)</a>
+                  <a id="users-online" class="btn ms-0">Online(<span id="online-num">0</span>)</a>
                 </div>
-              </nav>
+            </nav>
         </div>
         <div class="side-nav">
             <div id="total-members">
@@ -134,6 +134,7 @@
                 document.getElementById("members-num").textContent = members.length;
                 let memberListElem = document.getElementById("member-list");
                 memberListElem.textContent = "";
+                
 
                 for (let index = 0; index < members.length; index++) {
                     const member = members[index].user_id;
@@ -141,6 +142,7 @@
                     liElem.textContent = member
                     memberListElem.appendChild(liElem)
                 }
+
             }
 
 
@@ -161,6 +163,31 @@
         };
 
 
+        // Show the members of the group
+        let memberElem = document.getElementById("all-members");
+        let membersList = document.getElementById("member-list").childNodes;
+        memberElem.addEventListener("click", () => {
+            let eachMemberTogether = "";
+            membersList.forEach(element => {
+                eachMemberTogether += element.textContent + "\n"
+            });
+            alert(eachMemberTogether);
+        });
+
+        // Show the names of users online
+        let onlineElem = document.getElementById("users-online");
+        let onlineUserList = document.getElementById("user-list").childNodes;
+        onlineElem.addEventListener("click", () => {
+            let eachOnlineUserTogether = "";
+            onlineUserList.forEach(element => {
+                eachOnlineUserTogether += element.textContent + "\n"
+            });
+            alert(eachOnlineUserTogether);
+        })
+
+        
+
+
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
             alert("Not connected");
@@ -169,7 +196,6 @@
             async function delete_user_channels() {
                 let responseFetch = await fetch(url);
                 let response = await responseFetch.json();
-                // alert(response.deleted)
             }
             delete_user_channels();
         };
