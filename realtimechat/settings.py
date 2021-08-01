@@ -159,6 +159,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-print("The redis is", os.env["REDIS_URL"])
+print("The redis is", os.environ.get("REDIS_URL"))
 
 django_heroku.settings(locals())
