@@ -21,7 +21,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Add channnel to database
         await self.add_channel(user = str(self.scope["user"]), group = self.room_name, channel_name = self.channel_name)
 
-        print("Connected")
         await self.accept()
 
         # Send previous chat messages on connect

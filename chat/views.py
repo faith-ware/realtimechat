@@ -92,7 +92,6 @@ def user_auth(request, room_name):
                     # Log user in if credentials are correct
                     if user is not None:
                         login(request, user)
-                        print("logged in")
                         user_id = request.user.id
 
                         # Check if the existing user is already a member of the group 
