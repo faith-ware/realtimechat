@@ -18,6 +18,8 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'realtimechat.settings')
 django.setup()
 
+from django.core.management import call_command
+
 application = ProtocolTypeRouter({
     "http" : get_asgi_application(),
     "websocket" : AuthMiddlewareStack(
