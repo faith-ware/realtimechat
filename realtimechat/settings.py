@@ -85,13 +85,16 @@ WSGI_APPLICATION = 'realtimechat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'realtimechatdb',
-        'USER': 'postgres',
-        'PASSWORD': 'admin123',
-        'HOST': 'localhost',
+        'NAME': 'd9rguvi0j44ip7',
+        'USER': 'rkzqcenyhkfzqo',
+        'PASSWORD': '47b07c1da12c2764747ba3d174f0fb122582c9af119c946035be56f0fbc0fa7b',
+        'HOST': 'ec2-3-230-38-145.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES["default"].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -150,7 +153,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get("REDIS_URL", 'redis://localhost:6379')],
+            "hosts": [os.getenv("REDIS_URL", 'redis://localhost:6379')],
         },
     },
 }
