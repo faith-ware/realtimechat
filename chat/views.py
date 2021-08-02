@@ -72,58 +72,62 @@ def user_auth(request, room_name):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        group_password = request.POST["group-password"]
-        group_name = room_name
-        group_id = Group.objects.filter(name = room_name)[0].id
 
-        # Check if group exists and authenticate
-        try:
-            group = Group.objects.filter(name = group_name)[0]
+        if len(password) > 3:
+            group_password = request.POST["group-password"]
+            group_name = room_name
+            group_id = Group.objects.filter(name = room_name)[0].id
 
-            # Check if the group password is correct
-            if check_password(group_password, group.password):
+            # Check if group exists and authenticate
+            try:
+                group = Group.objects.filter(name = group_name)[0]
 
-                # Check if user already exists
-                check_user = User.objects.filter(username = username).exists()
+                # Check if the group password is correct
+                if check_password(group_password, group.password):
 
-                if check_user:
-                    user = authenticate(username = username, password = password)
+                    # Check if user already exists
+                    check_user = User.objects.filter(username = username).exists()
 
-                    # Log user in if credentials are correct
-                    if user is not None:
-                        login(request, user)
-                        user_id = request.user.id
+                    if check_user:
+                        user = authenticate(username = username, password = password)
 
-                        # Check if the existing user is already a member of the group 
-                        check_member = Member.objects.filter(user_id = user_id, group_id = group_id).exists()
-                        if check_member:
-                            return redirect(reverse("chat:room", args=[room_name]))
-                        
-                        # Add existing user as a member of the group
-                        elif check_member == False:
-                            new_member = Member(user_id = user_id, group_id = group_id)
-                            new_member.save()
-                            return redirect(reverse("chat:room", args=[room_name]))
+                        # Log user in if credentials are correct
+                        if user is not None:
+                            login(request, user)
+                            user_id = request.user.id
 
+                            # Check if the existing user is already a member of the group 
+                            check_member = Member.objects.filter(user_id = user_id, group_id = group_id).exists()
+                            if check_member:
+                                return redirect(reverse("chat:room", args=[room_name]))
+                            
+                            # Add existing user as a member of the group
+                            elif check_member == False:
+                                new_member = Member(user_id = user_id, group_id = group_id)
+                                new_member.save()
+                                return redirect(reverse("chat:room", args=[room_name]))
+
+                        else:
+                            return redirect(reverse("chat:user_auth", args=[room_name]))
+
+                    # Create new user and add to the group if the user is not a member 
                     else:
-                        return redirect(reverse("chat:user_auth", args=[room_name]))
+                        new_user = User.objects.create_user(username, password = password)
+                        new_user.save()
+                        new_member = Member(user_id = new_user.id, group_id = group.id)
+                        new_member.save()
+                        new_user_auth = authenticate(username = username, password = password)
 
-                # Create new user and add to the group if the user is not a member 
-                else:
-                    new_user = User.objects.create_user(username, password = password)
-                    new_user.save()
-                    new_member = Member(user_id = new_user.id, group_id = group.id)
-                    new_member.save()
-                    new_user_auth = authenticate(username = username, password = password)
+                        if new_user_auth is not None:
+                            login(request, new_user_auth)
+                            return redirect(reverse("chat:room", args=[room_name]))
 
-                    if new_user_auth is not None:
-                        login(request, new_user_auth)
-                        return redirect(reverse("chat:room", args=[room_name]))
-
-        # Redirect to login page if credentials are not correct
-        except:
+            # Redirect to login page if credentials are not correct
+            except:
+                return redirect(reverse("chat:user_auth", args=[room_name]))
+        
+        else:
             return redirect(reverse("chat:user_auth", args=[room_name]))
-
     return render(request, "chat/user_login.html", context)
 
 
