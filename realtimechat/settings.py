@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'realtimechat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9rguvi0j44ip7',
-        'USER': 'rkzqcenyhkfzqo',
-        'PASSWORD': '47b07c1da12c2764747ba3d174f0fb122582c9af119c946035be56f0fbc0fa7b',
-        'HOST': 'ec2-3-230-38-145.compute-1.amazonaws.com',
+        'NAME': os.environ['NAME'],
+        'USER': os.environ['USER'],
+        'PASSWORD': os.environ['PASSWORD'],
+        'HOST': os.environ['HOST'],
         'PORT': '5432',
     }
 }
