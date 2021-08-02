@@ -5,11 +5,11 @@ This is a web application that allows you chat by generating a link.
 
 
 Homepage mobile view
-![GitHub Logo](https://github.com/faith-ware/images/blob/master/chatappmobile.png)
+1. ![GitHub Logo](https://github.com/faith-ware/images/blob/master/chatappmobile.png)
 
 
 Chat mobile view
-![GitHub Logo](https://github.com/faith-ware/images/blob/master/groupchatmobile.png)
+2. ![GitHub Logo](https://github.com/faith-ware/images/blob/master/groupchatmobile.png)
 
 ## How to start
 1. Click on the generate button to generate a group link and password.
@@ -18,7 +18,7 @@ Chat mobile view
 4. Send link and group password to whoever you want to chat with.
 
 
-
+## How to use
 
 - It has been tweaked for heroku deployment. 
 - Run requirements.txt and installed the packages
