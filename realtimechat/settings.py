@@ -152,11 +152,11 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["rediss://:p33ccf503309c631e9e8771c9a5e5c99c7d506699bfbd97a0ad27c478dc09602b@ec2-35-168-229-167.compute-1.amazonaws.com:17860"],
+            "hosts": [os.environ.get("REDIS_TLS_URL")],
         },
     },
 }
 
-print("The redis is", os.environ.get("REDIS_URL"))
+print("The redis is", os.environ.get("REDIS_TLS_URL"))
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
