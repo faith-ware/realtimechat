@@ -97,9 +97,7 @@
                 
                 // Change the group link input button to the generated one
                 let host_url = window.location.host;
-                console.log("Host url is", host_url)
                 let group_link = "https://" + host_url + "/chat/" + response.generated_name + "/"
-                console.log("Group link is", group_link)
                 let group_link_elem = document.getElementById("group-link");
                 group_link_elem.value = group_link
 
