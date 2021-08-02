@@ -4,12 +4,12 @@ This is a web application that allows you chat by generating a link.
 [Live link](https://linkchatapp.herokuapp.com/)
 
 
-###### Homepage mobile view
-1. ![GitHub Logo](https://github.com/faith-ware/images/blob/master/chatappmobile.png)
+## Homepage mobile view
+![GitHub Logo](https://github.com/faith-ware/images/blob/master/chatappmobile.png)
 
 
-###### Live chat mobile view
-2. ![GitHub Logo](https://github.com/faith-ware/images/blob/master/groupchatmobile.png)
+## Live chat mobile view
+![GitHub Logo](https://github.com/faith-ware/images/blob/master/groupchatmobile.png)
 
 ## How to start
 1. Click on the generate button to generate a group link and password.
