@@ -26,7 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-izeyez61rnsl0z$2_oy5_&b6@4+77fgmbtf9n(6k!!5tmnj5^n'
 
-print("Secret key is", SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -157,6 +156,5 @@ CHANNEL_LAYERS = {
     },
 }
 
-print("The redis is", os.environ.get("REDIS_TLS_URL"))
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
