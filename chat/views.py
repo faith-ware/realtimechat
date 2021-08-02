@@ -47,7 +47,7 @@ def room(request, room_name):
 # Generate a group name and password randomly
 def generate_group_name(request):
     char = string.ascii_letters + string.digits 
-    name = (random.choice(char) for _ in range(20))
+    name = (random.choice(char) for _ in range(11))
     generated_name = "".join(name)
     check_name = Group.objects.filter(name = generated_name).exists()
     
