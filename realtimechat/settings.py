@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import django_heroku
 from pathlib import Path
 import os
-import django_heroku
 import dj_database_url
 from dotenv import load_dotenv
 load_dotenv()
@@ -157,4 +157,4 @@ CHANNEL_LAYERS = {
 }
 
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
