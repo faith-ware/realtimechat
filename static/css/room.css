@@ -3,6 +3,10 @@
     padding: 0px;
 }
 
+body, html{
+    overflow-x: hidden;
+}
+
 .header { 
     grid-column: 1 / 5; 
     background-color: whitesmoke;
