@@ -1,5 +1,5 @@
 # realtimechat
-This is a web application that allows you chat by generating a link.
+This is a web application that allows you to chat with anyone by generating a link.
 
 [Live link](https://linkchatapp.herokuapp.com/)
 
