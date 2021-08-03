@@ -11,7 +11,12 @@
         }
 
         .login {
-            margin-top: 80px;
+            margin-top: 50px;
+        }
+
+        .messages {
+            margin-top: 10px;
+            color: red;
         }
     </style>
 {% endblock style %}
@@ -22,7 +27,7 @@
 
 
 {% block content %}
-<h2 class="text-center login">Login</h2>
+<h2 class="text-center login">Log in</h2>
     <form action="" method="POST" class="card">
         {% csrf_token %}
         <div class="mb-3">
@@ -35,9 +40,16 @@
           </div>
           <div class="mb-3">
             <label for="group-password" class="form-label">Group password</label>
-            <input type="password" name="group-password" class="form-control" id="group-password" placeholder="Enter the group password" required>
+            <input type="password" name="group-password" class="form-control" id="group-password" placeholder="Enter group password" required>
           </div>
           <button type="submit" class="btn btn-primary mb-2">Submit</button>
+          {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
           <b>Note:</b>
           <ul>
               <li>If you do not have account before new one will be created automatically.</li>

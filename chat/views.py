@@ -6,6 +6,7 @@ from .models import Group, Member, Connected_channel
 import string, random
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 def index(request):
     context = {
@@ -108,7 +109,8 @@ def user_auth(request, room_name):
                                 return redirect(reverse("chat:room", args=[room_name]))
 
                         else:
-                            return redirect(reverse("chat:user_auth", args=[room_name]))
+                            messages.warning(request, "Incorrect username or password")
+                            # return redirect(reverse("chat:user_auth", args=[room_name]))
 
                     # Create new user and add to the group if the user is not a member 
                     else:
@@ -121,13 +123,15 @@ def user_auth(request, room_name):
                         if new_user_auth is not None:
                             login(request, new_user_auth)
                             return redirect(reverse("chat:room", args=[room_name]))
-
+                else:
+                    messages.warning(request, "Incorrect group password")
             # Redirect to login page if credentials are not correct
             except:
                 return redirect(reverse("chat:user_auth", args=[room_name]))
         
         else:
-            return redirect(reverse("chat:user_auth", args=[room_name]))
+            messages.warning(request, "Password is too short")
+            
     return render(request, "chat/user_login.html", context)
 
 
