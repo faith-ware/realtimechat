@@ -190,7 +190,7 @@
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
-            alert("Not connected");
+            alert("Connection lost\nReload browser");
             let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
 
             async function delete_user_channels() {
