@@ -27,15 +27,15 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required>
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
           </div>
           <div class="mb-3">
             <label for="group-password" class="form-label">Group password</label>
-            <input type="password" name="group-password" class="form-control" id="group-password" placeholder="Enter the group password">
+            <input type="password" name="group-password" class="form-control" id="group-password" placeholder="Enter the group password" required>
           </div>
           <button type="submit" class="btn btn-primary mb-2">Submit</button>
           <b>Note:</b>
