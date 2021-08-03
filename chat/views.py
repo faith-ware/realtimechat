@@ -69,6 +69,10 @@ def generate_group_name(request):
 
 def user_auth(request, room_name):
     context = {}
+    try:
+        group_id = Group.objects.filter(name = room_name)[0].id
+    except:
+        return redirect(reverse("chat:index"))
 
     if request.method == "POST":
         username = request.POST["username"]
@@ -131,7 +135,7 @@ def user_auth(request, room_name):
         
         else:
             messages.warning(request, "Password is too short")
-            
+
     return render(request, "chat/user_login.html", context)
 
 
