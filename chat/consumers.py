@@ -6,6 +6,14 @@ from django.contrib.auth.models import User
 from channels.db import database_sync_to_async
 from chat.models import Chat, Group, Member, Connected_channel, Online
 from channels.layers import get_channel_layer
+import pytz
+from django.utils import timezone
+
+def convert_to_localtime(utctime):
+    fmt = "%Y-%m-%d %H:%M:%S"
+    newutc = utctime.replace(tzinfo=pytz.UTC)
+    localtz = newutc.astimezone(timezone.get_current_timezone())
+    return localtz.strftime(fmt)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -75,7 +83,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        date = str(datetime.now())
+        date = datetime.now()
         date_to_string = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
         message = text_data_json['message']
@@ -127,8 +135,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         chats = list(chat_query.values())
 
         for chat in chats:
-            date_to_string = chat["date"].strftime("%Y-%m-%d %H:%M:%S")
-            date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
+            date_to_timezone = convert_to_localtime(chat["date"])
+            date_to_12h = datetime.strptime(date_to_timezone, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
             chat["date"] = date_to_12h
             chat["user_id"] = str(User.objects.filter(id = chat["user_id"])[0])
         return json.dumps(chats)
