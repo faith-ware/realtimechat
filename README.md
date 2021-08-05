@@ -23,4 +23,5 @@ This is a web application that allows you to chat with anyone by generating a li
 - It has been tweaked for heroku deployment. 
 - Run requirements.txt and installed the packages
 - You can tweak it for any server you want to deploy it to.
+- Do not use for commercial purposes
 
