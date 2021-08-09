@@ -1,11 +1,18 @@
 import json
 from os import name
 from channels.generic.websocket import AsyncWebsocketConsumer
-from datetime import date, datetime
+from datetime import date, datetime, time
 from django.contrib.auth.models import User
 from channels.db import database_sync_to_async
 from chat.models import Chat, Group, Member, Connected_channel, Online
 from channels.layers import get_channel_layer
+import pytz
+
+def convert_to_localtime(utctime):
+    fmt = "%Y-%m-%d %H:%M:%S"
+    utc = utctime.replace(tzinfo=pytz.UTC)
+    localtime = utc.astimezone(pytz.timezone("Africa/Lagos"))
+    return localtime.strftime(fmt)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -75,8 +82,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        date = str(datetime.now())
-        date_to_string = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date = datetime.now()
+        date_to_string = date.strftime("%Y-%m-%d %H:%M:%S")
         date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
         message = text_data_json['message']
         user = str(self.scope["user"])
@@ -85,7 +92,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {
                     "user" : user,
                     "message" : message,
-                    "date" : date_to_12h,
+                    "date" : str(date),
                 },
             ]
 
@@ -129,7 +136,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         for chat in chats:
             date_to_string = chat["date"].strftime("%Y-%m-%d %H:%M:%S")
             date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
-            chat["date"] = date_to_12h
+            chat["date"] = str(chat["date"])
             chat["user_id"] = str(User.objects.filter(id = chat["user_id"])[0])
         return json.dumps(chats)
 
@@ -207,6 +214,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
         users_list = list(users.values())
         for user in users_list:
             user["user_id"] = str(User.objects.filter(id = user["user_id"])[0])
-        
         return json.dumps(users_list)
 
