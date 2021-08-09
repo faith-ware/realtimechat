@@ -3,7 +3,6 @@
 import os
 import sys
 
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'realtimechat.settings')
@@ -17,6 +16,16 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-
+def delete_users_online():
+    if (Connected_channel.objects.count() == 0) and (Online.objects.count() == 0):
+        pass
+    else:
+        Connected_channel.objects.all().delete()
+        Online.objects.all().delete()
+        print("Hi")
+    
 if __name__ == '__main__':
     main()
+    from chat.models import Online, Connected_channel
+    delete_users_online()
+

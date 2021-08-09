@@ -22,7 +22,7 @@
         </div>
         <div class="side-nav">
             <div id="total-members">
-                <p>Total members</p>
+                <p>Members</p>
                 <ul id="member-list">
                    
                 </ul>
@@ -72,6 +72,9 @@
 
         chatSocket.onopen = function (e) {
             alert("Connected")
+            // chatSocket.send(JSON.stringify({
+            //             'time_zone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            //         }));
         }
 
 
@@ -85,7 +88,11 @@
                     const chat = chats[index]
                     const user = (chat.user_id || chat.user)
                     const message = chat.message
-                    const time = chat.date.slice(11, 23)
+                    const pyUtcDate = chat.date
+                    
+                    const user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+                    const newtz = new Date(pyUtcDate).toLocaleString('en-US', { timeZone: user_timezone });
+                    const time = newtz.slice(10, newtz.length)
 
                     let mainDiv = document.querySelector(".main")
 
