@@ -88,7 +88,7 @@
                     const pyUtcDate = chat.date
                     
                     const user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-                    const newtz = new Date(pyUtcDate).toLocaleString('en-US', { timeZone: "Canada/Central" });
+                    const newtz = new Date(pyUtcDate).toLocaleString('en-US', { timeZone: user_timezone });
                     const time = newtz.slice(10, newtz.length)
 
                     let mainDiv = document.querySelector(".main")
