@@ -11,7 +11,7 @@ import pytz
 def convert_to_localtime(utctime):
     fmt = "%Y-%m-%d %H:%M:%S"
     utc = utctime.replace(tzinfo=pytz.UTC)
-    localtime = utc.astimezone(pytz.timezone("Africa/Lagos"))
+    localtime = utc.astimezone(pytz.timezone("Canada/Central"))
     return localtime.strftime(fmt)
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -136,7 +136,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         for chat in chats:
             date_to_string = chat["date"].strftime("%Y-%m-%d %H:%M:%S")
             date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
-            chat["date"] = str(chat["date"])
+            chat["date"] = convert_to_localtime(chat["date"])
             chat["user_id"] = str(User.objects.filter(id = chat["user_id"])[0])
         return json.dumps(chats)
 
