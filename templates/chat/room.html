@@ -47,6 +47,16 @@
                 </div>
             </div> -->
 
+            <!-- <div class="left-message-container">
+                <div class="dotsContainer left-message message">
+                    <p class="chat-message" style="color: white;"><i>faith is typing</i></p>
+                    <span id="dot1"></span>
+                    <span id="dot2"></span>
+                    <span id="dot3"></span>
+                </div>
+            </div> -->
+            
+
         </div>  
 
         <div class="bottom">
@@ -72,6 +82,9 @@
 
         chatSocket.onopen = function (e) {
             alert("Connected")
+            // chatSocket.send(JSON.stringify({
+            //             'time_zone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            //         }));
         }
 
 
@@ -80,13 +93,19 @@
             
             if (data.chat) {
                 const chats = JSON.parse(data.chat)
-
+                
+                
                 for (let index = 0; index < chats.length; index++) {
                     const chat = chats[index]
                     const user = (chat.user_id || chat.user)
                     const message = chat.message
                     const pyUtcDate = chat.date
                     
+                    let typingElem = document.getElementById(user + "typing")
+                    if (typingElem != null) {
+                        typingElem.remove();
+                    }
+
                     const user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
                     const newtz = new Date(pyUtcDate).toLocaleString('en-US', { timeZone: user_timezone });
                     const time = newtz.slice(10, newtz.length)
@@ -164,9 +183,93 @@
                 }
             }
 
+            if (data.typing) {
+                let jsonData = JSON.parse(data.typing)
+                let user = jsonData[0].user
+                let typing = jsonData[0].message
+
+                if (typing == "False") {
+                    let typingElem = document.getElementById(user + "typing")
+                    if (typingElem) {
+                        typingElem.remove();
+                    }
+                    
+                }
+
+                else if (typing == "True") {
+                    let typingElem = document.getElementById(user + "typing")
+
+                    if (typingElem == null) {
+                        let mainDiv = document.querySelector(".main")
+
+                        let chatContainerElem = document.createElement("div")
+                        let messageDiv = document.createElement("div")
+                        messageDiv.id = user + "typing"
+
+                        let span1 = document.createElement("span")
+                        let span2 = document.createElement("span")
+                        let span3 = document.createElement("span")
+
+                        span1.id = "dot1";
+                        span2.id = "dot2";
+                        span3.id = "dot3";
+
+                        let chatElem = document.createElement("p");
+                        chatElem.className = "chat-message";
+                        chatElem.style.color = "white";
+                        chatElem.textContent = user + " is typing";
+
+
+                        if (user == "{{ current_user }}") {
+                            chatContainerElem.className = "message-container"
+                            messageDiv.classList = ["message card current-user-typing"];
+                        } else {
+                            chatContainerElem.className = "left-message-container"
+                            messageDiv.classList = ["message left-message dotsContainer"];
+                        }        
+
+                        messageDiv.appendChild(chatElem);
+                        messageDiv.appendChild(span1);
+                        messageDiv.appendChild(span2);
+                        messageDiv.appendChild(span3);
+                        chatContainerElem.appendChild(messageDiv)
+
+                        mainDiv.appendChild(chatContainerElem)
+
+                        mainDiv.scrollTo(0,mainDiv.scrollHeight)
+                    }
+                }
+
+
+                
+            }
+
         };
 
+        var notTyping = () => {
+            chatSocket.send(JSON.stringify({
+                        'message': "not typing"
+                    }));
+        }
 
+        var showTime;
+
+
+        document.getElementById("message-input").addEventListener("keydown", () => {
+            console.log("Typing");
+            clearTimeout(showTime)
+            chatSocket.send(JSON.stringify({
+                        'message': "typing"
+                    }));
+        });
+
+        document.getElementById("message-input").addEventListener("keyup", () => {
+            console.log("Not typing");
+            clearTimeout(showTime)
+            showTime = setTimeout(notTyping, 3000)           
+        });
+
+        
         // Show the members of the group
         let memberElem = document.getElementById("all-members");
         let membersList = document.getElementById("member-list").childNodes;
@@ -194,7 +297,11 @@
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
+<<<<<<< HEAD
             alert("Connection lost\nReload browser");
+=======
+            alert("Disconnected\nReload browser");
+>>>>>>> local
             let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
 
             async function delete_user_channels() {
