@@ -125,7 +125,7 @@
 
                     let timeElem = document.createElement("p");
                     timeElem.className = "time";
-                    timeElem.textContent = chat.date;
+                    timeElem.textContent = time;
 
                     if (user == "{{ current_user }}") {
                         chatContainerElem.className = "message-container"
@@ -297,11 +297,7 @@
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
-<<<<<<< HEAD
             alert("Connection lost\nReload browser");
-=======
-            alert("Disconnected\nReload browser");
->>>>>>> local
             let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
 
             async function delete_user_channels() {
