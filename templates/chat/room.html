@@ -256,7 +256,6 @@
 
 
         document.getElementById("message-input").addEventListener("keydown", () => {
-            console.log("Typing");
             clearTimeout(showTime)
             chatSocket.send(JSON.stringify({
                         'message': "typing"
@@ -264,7 +263,6 @@
         });
 
         document.getElementById("message-input").addEventListener("keyup", () => {
-            console.log("Not typing");
             clearTimeout(showTime)
             showTime = setTimeout(notTyping, 3000)           
         });
