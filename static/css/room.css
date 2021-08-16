@@ -76,6 +76,7 @@
     padding-left: 7px;
     padding-right: 7px;
     width: fit-content;
+    white-space: pre-wrap;
 }
 
 .left-message {
