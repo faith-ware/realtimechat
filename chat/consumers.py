@@ -1,5 +1,6 @@
 import json
 from os import name
+import typing
 from channels.generic.websocket import AsyncWebsocketConsumer
 from datetime import date, datetime, time
 from django.contrib.auth.models import User
@@ -13,6 +14,7 @@ def convert_to_localtime(utctime):
     utc = utctime.replace(tzinfo=pytz.UTC)
     localtime = utc.astimezone(pytz.timezone("Africa/Lagos"))
     return localtime.strftime(fmt)
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -29,6 +31,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.add_channel(user = str(self.scope["user"]), group = self.room_name, channel_name = self.channel_name)
 
         await self.accept()
+
 
         # Send previous chat messages on connect
         await self.send(text_data=json.dumps({
@@ -87,26 +90,60 @@ class ChatConsumer(AsyncWebsocketConsumer):
         date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
         message = text_data_json['message']
         user = str(self.scope["user"])
-        group = self.room_name
-        chat = [
+
+        if message == "typing":
+            typing = [
+                    {
+                        "user" : user,
+                        "message" : "True",
+                    },
+                ]
+
+            await self.channel_layer.group_send(
+                self.room_group_name,
                 {
-                    "user" : user,
-                    "message" : message,
-                    "date" : str(date),
-                },
-            ]
+                    'type': 'chat_message',
+                    "typing" : json.dumps(typing),
+                }
+            )
 
-        # Save each message sent between users to the database
-        await self.save_chat(user = user, group = group, message = message, date = date)
+        elif message == "not typing":
+            typing = [
+                    {
+                        "user" : user,
+                        "message" : "False",
+                    },
+                ]
 
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                "chat" : json.dumps(chat),
-            }
-        )
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    "typing" : json.dumps(typing),
+                }
+            )
+
+        else:
+            group = self.room_name
+            chat = [
+                    {
+                        "user" : user,
+                        "message" : message,
+                        "date" : str(date),
+                    },
+                ]
+
+            # Save each message sent between users to the database
+            await self.save_chat(user = user, group = group, message = message, date = date)
+
+            # Send message to room group
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    "chat" : json.dumps(chat),
+                }
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
@@ -117,7 +154,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({
                 "chat" : chat,
             }))
+        
+        elif (len(tuple(event.keys())) == 2) and ("typing" in tuple(event.keys())):
+            await self.send(text_data=json.dumps({
+                "typing" : event["typing"],
+            }))
 
+        elif (len(tuple(event.keys())) == 2) and ("not typing" in tuple(event.keys())):
+            await self.send(text_data=json.dumps({
+                "typing" : event["typing"],
+            }))
+        
         else:
              # Send message to WebSocket
             await self.send(text_data=json.dumps({
@@ -136,7 +183,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         for chat in chats:
             date_to_string = chat["date"].strftime("%Y-%m-%d %H:%M:%S")
             date_to_12h = datetime.strptime(date_to_string, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %I:%M:%S %p")
-            chat["date"] = str(chat["date"])
+            chat["date"] = convert_to_localtime(chat["date"])
             chat["user_id"] = str(User.objects.filter(id = chat["user_id"])[0])
         return json.dumps(chats)
 

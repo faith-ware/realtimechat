@@ -22,7 +22,6 @@ def delete_users_online():
     else:
         Connected_channel.objects.all().delete()
         Online.objects.all().delete()
-        print("Hi")
     
 if __name__ == '__main__':
     main()

@@ -52,6 +52,9 @@
     padding-right: 10px;
 }
 
+.current-user-typing {
+    display: none;
+}
 
 
 .left-message-container {
@@ -137,6 +140,60 @@
 #total-members > p , #online-users > p {
     margin-bottom: 0px;
 }
+
+
+.dotsContainer {
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(91, 109, 91);
+}
+
+#dot1,
+#dot2,
+#dot3 {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    margin: 5px;
+    transition: all 0.5s ease-in-out;
+    animation: typing 1s infinite;
+}
+
+#dot1 {
+    animation-delay: 1s;
+}
+
+#dot2 {
+    animation-delay: 0.5s;
+}
+
+#dot3 {
+    animation-delay: 0.8s;
+}
+
+  
+  @keyframes typing {
+    0% {
+      transform: translateY(0);
+      transition: all 0.5s ease-in-out;
+    }
+  
+    50% {
+      transform: translateY(-5px);
+      transition: all 0.5s ease-in-out;
+    }
+  
+    100% {
+      transform: translateY(0);
+      transition: all 0.5s ease-in-out;
+    }
+  }
+
+
+
 
 
 @media (max-width : 576px) {
