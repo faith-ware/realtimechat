@@ -94,7 +94,6 @@
             if (data.chat) {
                 const chats = JSON.parse(data.chat)
                 
-                
                 for (let index = 0; index < chats.length; index++) {
                     const chat = chats[index]
                     const user = (chat.user_id || chat.user)
@@ -151,7 +150,6 @@
             }
 
 
-
             if (data.members) {
                 const members = JSON.parse(data.members)
                 document.getElementById("members-num").textContent = members.length;
@@ -183,6 +181,7 @@
                 }
             }
 
+            // Check if message sent from message is user typing
             if (data.typing) {
                 let jsonData = JSON.parse(data.typing)
                 let user = jsonData[0].user
@@ -246,25 +245,32 @@
 
         };
 
+        var typing = () => {
+            chatSocket.send(JSON.stringify({
+                        'message': "typing"
+                    }));
+        }
+
         var notTyping = () => {
             chatSocket.send(JSON.stringify({
                         'message': "not typing"
                     }));
         }
 
-        var showTime;
+        var showTime, sendTime;
 
-
+        // Send message to websocket when user is typing
         document.getElementById("message-input").addEventListener("keydown", () => {
-            console.log("Typing");
             clearTimeout(showTime)
-            chatSocket.send(JSON.stringify({
-                        'message': "typing"
-                    }));
+            var userTypingElem = document.querySelector(".current-user-typing")
+            
+            if (userTypingElem == null) {
+                sendTime = setTimeout(typing, 0000)
+            }  
         });
 
+        // Send message to websocket when user is not typing
         document.getElementById("message-input").addEventListener("keyup", () => {
-            console.log("Not typing");
             clearTimeout(showTime)
             showTime = setTimeout(notTyping, 3000)           
         });
@@ -297,7 +303,7 @@
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
-            alert("Disconnected\nReload browser");
+            alert("Connectio lost\nReload browser");
             let url = "{% url 'chat:delete_user_channel' 1234 %}".replace(/1234/, roomName)
 
             async function delete_user_channels() {
@@ -308,11 +314,6 @@
         };
 
         document.querySelector('#message-input').focus();
-        // document.querySelector('#message-input').onkeyup = function(e) {
-        //     if (e.keyCode === 13) {  // enter, return
-        //         document.querySelector('#message-send').click();
-        //     }
-        // };
 
         document.querySelector('#message-send').onclick = function(e) {
             const messageInputDom = document.querySelector('#message-input');
